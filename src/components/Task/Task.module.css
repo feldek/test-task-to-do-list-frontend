@@ -1,0 +1,13 @@
+.user__data {
+  margin: 30px auto auto;
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 500px;
+}
+
+.email,
+.userName {
+  padding-right: 10px;
+}

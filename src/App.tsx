@@ -1,37 +1,57 @@
-import React from "react";
-import { Counter } from "./features/counter/Counter";
-import "./App.css";
+import { Fragment, useEffect } from "react";
+import { Paper, Grid } from "@mui/material";
+import { useAppSelector, useAppDispatch } from "./redux/hooks";
+import { AddTaskForm } from "./components/AddTaskForm";
+import { ListTasks } from "./components/ListTasks";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { rootLoaderTasksSelector, tasksSelector } from "./redux/task/taskSelector";
+import { getTasks } from "./redux/task";
+import { Loader } from "./components/Loader";
 
-function App() {
+const App = () => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getTasks({}));
+  }, [dispatch]);
+
+  const tasks = useAppSelector(tasksSelector);
+  const fetching = useAppSelector(rootLoaderTasksSelector);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        {/* <img src={logo} className="App-logo" alt="logo" /> */}
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a className="App-link" href="https://reactjs.org/" target="_blank" rel="noopener noreferrer">
-            React
-          </a>
-          <span>, </span>
-          <a className="App-link" href="https://redux.js.org/" target="_blank" rel="noopener noreferrer">
-            Redux
-          </a>
-          <span>, </span>
-          <a className="App-link" href="https://redux-toolkit.js.org/" target="_blank" rel="noopener noreferrer">
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a className="App-link" href="https://react-redux.js.org/" target="_blank" rel="noopener noreferrer">
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <Fragment>
+      <Grid container spacing={0}>
+        <Grid item xs={12}>
+          <Paper
+            style={{
+              padding: 20,
+              margin: "auto",
+              textAlign: "center",
+              width: 500,
+            }}
+          >
+            <AddTaskForm />
+          </Paper>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          style={{
+            padding: 20,
+            margin: "auto",
+            textAlign: "center",
+            width: 500,
+          }}
+        >
+          {fetching ? <Loader /> : <ListTasks tasks={tasks} />}
+        </Grid>
+      </Grid>
+
+      <div>
+        <ToastContainer />
+      </div>
+    </Fragment>
   );
-}
+};
 
 export default App;
