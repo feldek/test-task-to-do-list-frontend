@@ -4,6 +4,7 @@ interface MainTaskData {
   userName: string;
   email: string;
   status?: string;
+  edited?: boolean | null;
 }
 
 export interface ITask extends MainTaskData {
@@ -34,6 +35,7 @@ export interface IGetTaskParams {
 
 export interface IUpdateTaskApi {
   id: string;
+  edited?: boolean;
   description?: string;
   userName?: string;
   email?: string;

@@ -1,9 +1,9 @@
 import { Build, Delete } from "@mui/icons-material";
-import { Grid, Paper, IconButton } from "@mui/material";
+import { Grid, Paper, IconButton, Checkbox } from "@mui/material";
 import { ITask } from "../../interfaces";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { authSelector } from "../../redux/userSlice/userSelector";
-import { removeTask, runEditMode } from "../../redux/taskSlice";
+import { removeTask, runEditMode, updateStatus } from "../../redux/taskSlice";
 import { Loader } from "../Loader";
 
 import style from "./Task.module.css";
@@ -20,6 +20,7 @@ const styles = {
     marginTop: 3,
     width: 500,
     height: 40,
+    justifyContent: "space-between",
   },
 };
 
@@ -33,35 +34,47 @@ export const Task = (props: ITask) => {
   const handleRemoveTask = () => {
     dispatch(removeTask({ id: props.id }));
   };
-  // const gridClass = this.state.fade ? "fade-out" : "";
-  const gridClass = "fade-out";
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const changeStatus = props.status === "done" ? "created" : "done";
+    dispatch(updateStatus({ id: props.id, status: changeStatus }));
+  };
+
   return (
-    <Grid xs={12} className={`${gridClass}`} item key={props.id}>
-      {props.fetching ? (
-        <div style={{ margin: "60px 0 40px" }}>
-          <Loader />
-        </div>
-      ) : (
-        <>
-          <div className={style.user__data}>
-            <div className={style.userName}>{props.userName}</div>
-            <div className={style.email}>{props.email}</div>
+    <Grid xs={12} item key={props.id}>
+      <div className={style.container}>
+        {props.fetching ? (
+          <div style={{ margin: "60px 0 40px" }}>
+            <Loader />
           </div>
-          <Paper elevation={2} style={styles.Paper}>
-            <span>{props.description}</span>
-            {userAuth && (
-              <>
-                <IconButton color="primary" aria-label="Edit" style={styles.Icon} onClick={handleUpdateTask}>
-                  <Build fontSize="small" />
-                </IconButton>
-                <IconButton color="secondary" aria-label="Delete" onClick={handleRemoveTask}>
-                  <Delete fontSize="small" />
-                </IconButton>
-              </>
-            )}
-          </Paper>
-        </>
-      )}
+        ) : (
+          <>
+            <div className={style.user__data}>
+              <div className={style.userName}>{props.userName}</div>
+              <div className={style.email}>{props.email}</div>
+            </div>
+            <Paper
+              elevation={2}
+              style={{ ...styles.Paper, backgroundColor: props.status === "done" ? "#1976d233" : "initial" }}
+            >
+              <span>{props.description}</span>
+              {userAuth && (
+                <div>
+                  <Checkbox defaultChecked onChange={handleChange} checked={props.status === "done" ? true : false} />
+                  <IconButton color="primary" aria-label="Edit" style={styles.Icon} onClick={handleUpdateTask}>
+                    <Build fontSize="small" />
+                  </IconButton>
+                  <IconButton color="secondary" aria-label="Delete" onClick={handleRemoveTask}>
+                    <Delete fontSize="small" />
+                  </IconButton>
+                </div>
+              )}
+            </Paper>
+            {props.edited && <div className={style.edit}>Description task edited by admin</div>}
+            {props.status === "done" && <div className={style.status}>Task Done</div>}
+          </>
+        )}
+      </div>
     </Grid>
   );
 };

@@ -39,10 +39,16 @@ export const removeTask = createAsyncThunk("task/removeTask", async ({ id }: { i
   await api.removeTask({ id });
 });
 
-export const updateTask = createAsyncThunk(
-  "task/updateTask",
+export const updateDescription = createAsyncThunk(
+  "task/updateDescription",
   async ({ id, description }: { id: string; description: string }) => {
-    await api.updateTask({ id, description });
+    await api.updateTask({ id, description, edited: true });
+  }
+);
+export const updateStatus = createAsyncThunk(
+  "task/updateStatus",
+  async ({ id, status }: { id: string; status: string }) => {
+    await api.updateTask({ id, status });
   }
 );
 
@@ -110,18 +116,36 @@ export const taskSlice = createSlice({
       toast.info("Error removed task");
     });
 
-    builder.addCase(updateTask.pending, (state, action) => {
+    builder.addCase(updateStatus.pending, (state, action) => {
       const id = action.meta.arg.id;
       state.orderTasks = state.orderTasks.map((task) => (task.id === id ? { ...task, fetching: true } : task));
     });
-    builder.addCase(updateTask.fulfilled, (state, action) => {
+    builder.addCase(updateStatus.fulfilled, (state, action) => {
+      const id = action.meta.arg.id;
+      const status = action.meta.arg.status;
+      state.orderTasks = state.orderTasks.map((task) =>
+        task.id === id ? { ...task, status, fetching: false, editMode: false } : task
+      );
+    });
+    builder.addCase(updateStatus.rejected, (state, action) => {
+      const id = action.meta.arg.id;
+      state.orderTasks = state.orderTasks.map((task) =>
+        task.id === id ? { ...task, fetching: false, editMode: false } : task
+      );
+    });
+
+    builder.addCase(updateDescription.pending, (state, action) => {
+      const id = action.meta.arg.id;
+      state.orderTasks = state.orderTasks.map((task) => (task.id === id ? { ...task, fetching: true } : task));
+    });
+    builder.addCase(updateDescription.fulfilled, (state, action) => {
       const id = action.meta.arg.id;
       const description = action.meta.arg.description;
       state.orderTasks = state.orderTasks.map((task) =>
-        task.id === id ? { ...task, description, fetching: false, editMode: false } : task
+        task.id === id ? { ...task, description, fetching: false, editMode: false, edited: true } : task
       );
     });
-    builder.addCase(updateTask.rejected, (state, action) => {
+    builder.addCase(updateDescription.rejected, (state, action) => {
       const id = action.meta.arg.id;
       state.orderTasks = state.orderTasks.map((task) =>
         task.id === id ? { ...task, fetching: false, editMode: false } : task

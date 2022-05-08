@@ -11,3 +11,29 @@
 .userName {
   padding-right: 10px;
 }
+
+.edit {
+  display: flex;
+  font-size: 12px;
+  color: #1976d2;
+  font-weight: 600;
+  position: absolute;
+  left: 50px;
+  bottom: -20px;
+}
+.status {
+  display: flex;
+  font-size: 12px;
+  color: #1976d2;
+  font-weight: 600;
+  position: absolute;
+  right: 50px;
+  bottom: -20px;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: auto;
+  position: relative;
+}

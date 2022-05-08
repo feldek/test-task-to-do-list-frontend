@@ -3,7 +3,7 @@ import { Grid, Paper, IconButton, Input } from "@mui/material";
 import { useState } from "react";
 import { ITask } from "../interfaces";
 import { useAppDispatch } from "../redux/hooks";
-import { updateTask } from "../redux/taskSlice";
+import { updateDescription } from "../redux/taskSlice";
 
 import style from "./Task/Task.module.css";
 
@@ -31,9 +31,9 @@ export const EditTask = (props: ITask) => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    dispatch(updateTask({ id: props.id, description: value }));
+    dispatch(updateDescription({ id: props.id, description: value }));
   };
-  
+
   return (
     <Grid xs={12} item key={props.id}>
       <div className={style.user__data}>
