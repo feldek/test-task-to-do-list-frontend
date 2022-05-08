@@ -1,4 +1,5 @@
 import axios from "axios";
+import { LIMIT_TASKS } from "../constants";
 import { ICreateTaskApi, IGetTaskParams, IUpdateTaskApi, orderDirection, tasksOrderBy } from "../interfaces";
 
 axios.defaults.baseURL = "http://localhost:8000";
@@ -20,14 +21,14 @@ export const api = {
   async getTask({
     orderBy = tasksOrderBy.userName,
     direction = orderDirection.asc,
-    limit = 3,
+    limit = LIMIT_TASKS,
     offset = 0,
   }: IGetTaskParams) {
-    const result = await axios.get("/tasks", {
+    const result = await axios.get<{ tasks: ICreateTaskApi[]; countTasks: number }>("/tasks", {
       params: { orderBy, direction, limit, offset },
     });
 
-    return result.data as ICreateTaskApi[];
+    return result.data;
   },
 
   async createTask(params: ICreateTaskApi) {

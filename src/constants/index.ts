@@ -1,0 +1,1 @@
+export const LIMIT_TASKS = 3

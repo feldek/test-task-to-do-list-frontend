@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { useAppDispatch } from "../../redux/hooks";
-import { createTask } from "../../redux/task";
+import { createTask } from "../../redux/taskSlice";
 import { v4 as uuidv4 } from "uuid";
 
 import style from "./AddTaskForm.module.css";
