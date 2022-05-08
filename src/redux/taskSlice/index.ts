@@ -31,9 +31,20 @@ export const getTasks = createAsyncThunk("task/getTasks", async (_, { getState }
   return orderTasks;
 });
 
-export const createTask = createAsyncThunk("task/createTasks", async (params: ICreateTaskApi) => {
+export const createTask = createAsyncThunk("task/createTask", async (params: ICreateTaskApi) => {
   await api.createTask(params);
 });
+
+export const removeTask = createAsyncThunk("task/removeTask", async ({ id }: { id: string }) => {
+  await api.removeTask({ id });
+});
+
+export const updateTask = createAsyncThunk(
+  "task/updateTask",
+  async ({ id, description }: { id: string; description: string }) => {
+    await api.updateTask({ id, description });
+  }
+);
 
 export const taskSlice = createSlice({
   name: "task",
@@ -47,6 +58,11 @@ export const taskSlice = createSlice({
     },
     setOffset: (state, action: PayloadAction<number>) => {
       state.offset = action.payload;
+    },
+    runEditMode: (state, action: PayloadAction<{ id: string }>) => {
+      state.orderTasks = state.orderTasks.map((task) =>
+        task.id === action.payload.id ? { ...task, editMode: true } : task
+      );
     },
   },
   extraReducers: (builder) => {
@@ -62,6 +78,7 @@ export const taskSlice = createSlice({
       state.fetching = false;
     });
 
+    //createTask use positive rendering
     builder.addCase(createTask.pending, (state, action) => {
       state.orderTasks = [{ ...action.meta.arg, editMode: false, fetching: true }, ...state.orderTasks];
     });
@@ -77,7 +94,40 @@ export const taskSlice = createSlice({
       state.orderTasks = state.orderTasks.filter((task) => task.id !== id);
       toast.error("Error created task");
     });
+
+    builder.addCase(removeTask.pending, (state, action) => {
+      const id = action.meta.arg.id;
+      state.orderTasks = state.orderTasks.map((task) => (task.id === id ? { ...task, fetching: true } : task));
+    });
+    builder.addCase(removeTask.fulfilled, (state, action) => {
+      const id = action.meta.arg.id;
+      state.orderTasks = state.orderTasks.filter((task) => task.id !== id);
+      toast.info("Task successfully removed");
+    });
+    builder.addCase(removeTask.rejected, (state, action) => {
+      const id = action.meta.arg.id;
+      state.orderTasks = state.orderTasks.map((task) => (task.id === id ? { ...task, fetching: false } : task));
+      toast.info("Error removed task");
+    });
+
+    builder.addCase(updateTask.pending, (state, action) => {
+      const id = action.meta.arg.id;
+      state.orderTasks = state.orderTasks.map((task) => (task.id === id ? { ...task, fetching: true } : task));
+    });
+    builder.addCase(updateTask.fulfilled, (state, action) => {
+      const id = action.meta.arg.id;
+      const description = action.meta.arg.description;
+      state.orderTasks = state.orderTasks.map((task) =>
+        task.id === id ? { ...task, description, fetching: false, editMode: false } : task
+      );
+    });
+    builder.addCase(updateTask.rejected, (state, action) => {
+      const id = action.meta.arg.id;
+      state.orderTasks = state.orderTasks.map((task) =>
+        task.id === id ? { ...task, fetching: false, editMode: false } : task
+      );
+    });
   },
 });
-export const { setSortBy, setDirection, setOffset } = taskSlice.actions;
+export const { setSortBy, setDirection, setOffset, runEditMode } = taskSlice.actions;
 export default taskSlice.reducer;

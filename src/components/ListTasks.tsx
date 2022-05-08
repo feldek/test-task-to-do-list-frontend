@@ -8,9 +8,9 @@ interface IListTasks {
 export const ListTasks = (props: IListTasks) => {
   const renderTasks = (task: ITask) => {
     if (task.editMode) {
-      return <EditTask key={task.description} {...task} />;
+      return <EditTask key={task.id} {...task} />;
     } else {
-      return <Task key={task.description} {...task} />;
+      return <Task key={task.id} {...task} />;
     }
   };
 

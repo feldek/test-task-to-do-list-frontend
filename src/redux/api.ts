@@ -1,21 +1,21 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { LIMIT_TASKS } from "../constants";
 import { ICreateTaskApi, IGetTaskParams, IUpdateTaskApi, orderDirection, tasksOrderBy } from "../interfaces";
 
 axios.defaults.baseURL = "http://localhost:8000";
 
-axios.interceptors.response.use(
-  function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
-    return response;
-  },
-  function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
-    return Promise.reject(error);
-  }
-);
+// axios.interceptors.response.use(
+//   function (response) {
+//     // Any status code that lie within the range of 2xx cause this function to trigger
+//     // Do something with response data
+//     return response;
+//   },
+//   function (error) {
+//     // Any status codes that falls outside the range of 2xx cause this function to trigger
+//     // Do something with response error
+//     return Promise.reject(error);
+//   }
+// );
 
 export const api = {
   async getTask({
@@ -50,5 +50,17 @@ export const api = {
         authorization: localStorage.getItem("token") as string,
       },
     });
+  },
+
+  async logIn({ login, password }: { login: string; password: string }) {
+    try {
+      const response = await axios.post<{ token: string }>("/admin", { login, password });
+
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        throw Error(error.response?.data.message);
+      }
+    }
   },
 };

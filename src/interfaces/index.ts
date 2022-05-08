@@ -39,3 +39,8 @@ export interface IUpdateTaskApi {
   email?: string;
   status?: string;
 }
+
+export interface ILogIn {
+  login: string;
+  password: string;
+}

@@ -16,6 +16,7 @@ import { Loader } from "./components/Loader";
 import { DropDownList } from "./components/DropDownList";
 import { DropDownListDirection } from "./components/DropDownListDirection";
 import { Pagination } from "./components/Pagination";
+import { LoginForm } from "./components/LogInForm/LogInForm";
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -31,6 +32,10 @@ const App = () => {
   return (
     <Fragment>
       <Grid container spacing={0}>
+        <div>
+          <LoginForm />
+        </div>
+
         <Grid item xs={12}>
           <Paper
             style={{
@@ -43,6 +48,7 @@ const App = () => {
             <AddTaskForm />
           </Paper>
         </Grid>
+
         <Grid
           item
           xs={12}
