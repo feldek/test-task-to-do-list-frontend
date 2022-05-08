@@ -19,6 +19,10 @@ export const logIn = createAsyncThunk("user/logIn", async ({ login, password }: 
   return result;
 });
 
+export const authorization = createAsyncThunk("user/authorization", async ({ token }: { token: string }) => {
+  return await api.authorization(token);
+});
+
 export const userSlice = createSlice({
   name: "user",
   initialState,
@@ -39,7 +43,19 @@ export const userSlice = createSlice({
       state.authenticated = true;
     });
     builder.addCase(logIn.rejected, (state, action) => {
+      state.fetching = false;
       state.error = action.error?.message;
+    });
+
+    builder.addCase(authorization.pending, (state) => {
+      state.fetching = true;
+    });
+    builder.addCase(authorization.fulfilled, (state) => {
+      state.authenticated = true;
+    });
+    builder.addCase(authorization.rejected, (state) => {
+      state.fetching = false;
+      localStorage.removeItem("token");
     });
   },
 });

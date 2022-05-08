@@ -17,6 +17,7 @@ import { DropDownList } from "./components/DropDownList";
 import { DropDownListDirection } from "./components/DropDownListDirection";
 import { Pagination } from "./components/Pagination";
 import { LoginForm } from "./components/LogInForm/LogInForm";
+import { authorization } from "./redux/userSlice";
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -28,6 +29,14 @@ const App = () => {
   useEffect(() => {
     dispatch(getTasks());
   }, [dispatch, orderBy, direction]);
+
+  //if token exist , then checked his validity
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      dispatch(authorization({ token }));
+    }
+  }, [dispatch]);
 
   return (
     <Fragment>

@@ -50,4 +50,10 @@ export const api = {
       }
     }
   },
+
+  async authorization(token: string) {
+    const response = await axios.post("/admin/authorization", {}, { headers: { authorization: token } });
+
+    return response.data;
+  },
 };
