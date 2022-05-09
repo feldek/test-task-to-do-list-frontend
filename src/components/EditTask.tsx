@@ -1,5 +1,5 @@
 import { Save } from "@mui/icons-material";
-import { Grid, Paper, IconButton, Input } from "@mui/material";
+import { Paper, IconButton, Input } from "@mui/material";
 import { useState } from "react";
 import { ITask } from "../interfaces";
 import { useAppDispatch } from "../redux/hooks";
@@ -35,7 +35,7 @@ export const EditTask = (props: ITask) => {
   };
 
   return (
-    <Grid xs={12} item key={props.id}>
+    <div key={props.id}>
       <div className={style.user__data}>
         <div className={style.userName}>{props.userName}</div>
         <div className={style.email}>{props.email}</div>
@@ -48,6 +48,6 @@ export const EditTask = (props: ITask) => {
           </IconButton>
         </form>
       </Paper>
-    </Grid>
+    </div>
   );
 };

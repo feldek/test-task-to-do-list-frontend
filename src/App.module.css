@@ -1,0 +1,45 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.add_task_form {
+  padding: 10px 20px;
+  margin: 20px auto;
+  text-align: center;
+  width: 600px;
+}
+
+.tasks__container {
+  padding: 10px 20px;
+  margin: 20px auto;
+  text-align: center;
+  width: 600px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.dropDown__container {
+  padding: 20px 0;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.listTasks__container {
+  padding: 20px;
+  margin: auto;
+  text-align: center;
+}
+
+.pagination {
+  padding: 20px;
+  margin: 5px auto;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}

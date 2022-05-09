@@ -18,7 +18,7 @@
   color: #1976d2;
   font-weight: 600;
   position: absolute;
-  left: 50px;
+  left: 20px;
   bottom: -20px;
 }
 .status {
@@ -27,7 +27,7 @@
   color: #1976d2;
   font-weight: 600;
   position: absolute;
-  right: 50px;
+  right: 20px;
   bottom: -20px;
 }
 .container {
@@ -36,4 +36,22 @@
   max-width: 600px;
   margin: auto;
   position: relative;
+}
+
+.wrapper {
+  margin: auto;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  margin-top: 3px;
+  width: 500px;
+  height: 40px;
+  justify-content: space-between;
+}
+
+.icon {
+  margin-left: auto;
+}
+.loader {
+  margin: 60px 0 40px;
 }

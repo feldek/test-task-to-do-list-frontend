@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Grid, TextField, Paper, Button } from "@mui/material";
+import { TextField, Paper, Button } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { logIn, logOut, resetError } from "../../redux/userSlice";
 import { authSelector, errorSelector } from "../../redux/userSlice/userSelector";
+
+import style from "./LogInForm.module.css";
 
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
@@ -34,25 +36,17 @@ export const LoginForm = () => {
   };
 
   return (
-    <div
-      style={{
-        position: "absolute",
-        top: 20,
-        right: 10,
-      }}
-    >
+    <div className={style.container}>
       {userAuth ? (
         <Paper>
-          <Grid item xs={12}>
-            <Button fullWidth onClick={handleLogOut} variant="contained" color="primary">
-              LogOut
-            </Button>
-          </Grid>
+          <Button fullWidth onClick={handleLogOut} variant="contained" color="primary">
+            LogOut
+          </Button>
         </Paper>
       ) : (
         <form onSubmit={handleSubmit}>
           <Paper style={{ padding: "10px" }}>
-            <Grid item xs={12}>
+            <div>
               <TextField
                 label="Username"
                 name={inputName.login}
@@ -61,8 +55,8 @@ export const LoginForm = () => {
                 style={{ margin: "10px 0" }}
                 error={!!userError}
               />
-            </Grid>
-            <Grid item xs={12}>
+            </div>
+            <div>
               <TextField
                 label="Password"
                 name={inputName.password}
@@ -73,12 +67,12 @@ export const LoginForm = () => {
                 error={!!userError}
                 helperText={userError}
               />
-            </Grid>
-            <Grid item xs={12}>
+            </div>
+            <div>
               <Button fullWidth type="submit" variant="contained" color="primary">
                 Login
               </Button>
-            </Grid>
+            </div>
           </Paper>
         </form>
       )}

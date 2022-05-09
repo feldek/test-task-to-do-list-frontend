@@ -1,5 +1,5 @@
 import { Build, Delete } from "@mui/icons-material";
-import { Grid, Paper, IconButton, Checkbox } from "@mui/material";
+import { Paper, IconButton, Checkbox } from "@mui/material";
 import { ITask } from "../../interfaces";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { authSelector } from "../../redux/userSlice/userSelector";
@@ -7,22 +7,6 @@ import { removeTask, runEditMode, updateStatus } from "../../redux/taskSlice";
 import { Loader } from "../Loader";
 
 import style from "./Task.module.css";
-
-const styles = {
-  Icon: {
-    marginLeft: "auto",
-  },
-  Paper: {
-    margin: "auto",
-    padding: 10,
-    display: "flex",
-    alignItems: "center",
-    marginTop: 3,
-    width: 500,
-    height: 40,
-    justifyContent: "space-between",
-  },
-};
 
 export const Task = (props: ITask) => {
   const dispatch = useAppDispatch();
@@ -41,10 +25,10 @@ export const Task = (props: ITask) => {
   };
 
   return (
-    <Grid xs={12} item key={props.id}>
+    <div key={props.id}>
       <div className={style.container}>
         {props.fetching ? (
-          <div style={{ margin: "60px 0 40px" }}>
+          <div className={style.loader}>
             <Loader />
           </div>
         ) : (
@@ -54,14 +38,15 @@ export const Task = (props: ITask) => {
               <div className={style.email}>{props.email}</div>
             </div>
             <Paper
+              className={style.wrapper}
               elevation={2}
-              style={{ ...styles.Paper, backgroundColor: props.status === "done" ? "#1976d233" : "initial" }}
+              style={{ backgroundColor: props.status === "done" ? "#1976d233" : "initial" }}
             >
               <span>{props.description}</span>
               {userAuth && (
                 <div>
                   <Checkbox defaultChecked onChange={handleChange} checked={props.status === "done" ? true : false} />
-                  <IconButton color="primary" aria-label="Edit" style={styles.Icon} onClick={handleUpdateTask}>
+                  <IconButton color="primary" aria-label="Edit" className={style.icon} onClick={handleUpdateTask}>
                     <Build fontSize="small" />
                   </IconButton>
                   <IconButton color="secondary" aria-label="Delete" onClick={handleRemoveTask}>
@@ -75,6 +60,6 @@ export const Task = (props: ITask) => {
           </>
         )}
       </div>
-    </Grid>
+    </div>
   );
 };

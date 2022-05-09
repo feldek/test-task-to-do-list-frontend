@@ -1,5 +1,5 @@
-import { Fragment, useEffect } from "react";
-import { Paper, Grid } from "@mui/material";
+import { useEffect } from "react";
+import { Paper } from "@mui/material";
 import { useAppSelector, useAppDispatch } from "./redux/hooks";
 import { AddTaskForm } from "./components/AddTaskForm";
 import { ListTasks } from "./components/ListTasks";
@@ -18,6 +18,8 @@ import { DropDownListDirection } from "./components/DropDownListDirection";
 import { Pagination } from "./components/Pagination";
 import { LoginForm } from "./components/LogInForm/LogInForm";
 import { authorization } from "./redux/userSlice";
+
+import style from "./App.module.css";
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -39,74 +41,33 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <Fragment>
-      <Grid container spacing={0}>
+    <div className={style.container}>
+      <div>
+        <LoginForm />
+      </div>
+
+      <Paper className={style.add_task_form}>
+        <AddTaskForm />
+      </Paper>
+
+      <Paper className={style.tasks__container}>
         <div>
-          <LoginForm />
+          <div className={style.dropDown__container}>
+            <DropDownList />
+            <DropDownListDirection />
+          </div>
+
+          <div className={style.listTasks__container}>{fetching ? <Loader /> : <ListTasks tasks={tasks} />}</div>
         </div>
-
-        <Grid item xs={12}>
-          <Paper
-            style={{
-              padding: 20,
-              margin: "auto",
-              textAlign: "center",
-              width: 500,
-            }}
-          >
-            <AddTaskForm />
-          </Paper>
-        </Grid>
-
-        <Grid
-          item
-          xs={12}
-          style={{
-            padding: "20px 0",
-            margin: "auto",
-            textAlign: "center",
-            maxWidth: 500,
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          <DropDownList />
-          <DropDownListDirection />
-        </Grid>
-
-        <Grid
-          item
-          xs={12}
-          style={{
-            padding: 20,
-            margin: "auto",
-            textAlign: "center",
-            width: 500,
-          }}
-        >
-          {fetching ? <Loader /> : <ListTasks tasks={tasks} />}
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          style={{
-            padding: 20,
-            margin: "auto",
-            textAlign: "center",
-            width: 500,
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
+        <div className={style.pagination}>
           <Pagination />
-        </Grid>
-      </Grid>
+        </div>
+      </Paper>
 
       <div>
         <ToastContainer />
       </div>
-    </Fragment>
+    </div>
   );
 };
 
