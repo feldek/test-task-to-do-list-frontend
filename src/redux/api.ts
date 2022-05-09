@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 import { LIMIT_TASKS } from "../constants";
 import { ICreateTaskApi, IGetTaskParams, IUpdateTaskApi, orderDirection, tasksOrderBy } from "../interfaces";
 
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL = "https://test-work-to-do-list-backend.herokuapp.com";
 
 export const api = {
   async getTask({
